@@ -1,45 +1,49 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    
+  <div class="form">
+    <!-- Collect some info from players -->
     <label>First player:</label>
     <input type="text" required v-model="firstPlayer">
-    <div v-if="firstPlayerError" class="error">{{ firstPlayerError }}</div>
+    <div v-show="firstNameTooShort" class="error">Name too short</div>
     
     <label>Second player:</label>
     <input type="text" required v-model="secondPlayer">
-    <div v-if="secondPlayerError" class="error">{{ secondPlayerError }}</div>
+    <div v-show="secondNameTooShort" class="error">Name too short</div>
 
-    <div class="submit">
-      <button>
-        Start the match!
-      </button>
+    <!-- Show the button only if names are ok -->
+    <div v-if="!firstNameTooShort && !secondNameTooShort" class="start">
+      <router-link :to="{name:'match', params:{ playerX: firstPlayer, playerO: secondPlayer }}">
+        Start
+      </router-link>
     </div>
 
-  </form>
+  </div>
 </template>
 
 <script>
   export default {
+    name: 'InputForm',
     data () {
       return {
         firstPlayer: '',
         secondPlayer: '',
-        firstPlayerError: '',
-        secondPlayerError: ''
+        firstNameTooShort: true,
+        secondNameTooShort: true
       }
     },
-    methods: {
-      handleSubmit(e){
-        // validate names
-        this.firstPlayerError = this.firstPlayer.length > 2 ? '' : 'Name too short';
-        this.secondPlayerError = this.secondPlayer.length > 2 ? '' : 'Name too short';
+    watch: {
+      // Just 'watch' if variables are ok or not
+      firstPlayer: function(value){
+        this.firstNameTooShort = value.length < 3 ? true : false;
+      },
+      secondPlayer: function(value){
+        this.secondNameTooShort = value.length < 3 ? true : false;
       }
     }
   }
 </script>
 
 <style scoped>
-form {
+.form {
   max-width: 420px;
   margin: 30px auto;
   background: white;
@@ -47,11 +51,11 @@ form {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 label {
-  color: #aaa;
-  text-align: left;
-  display: inline-block;
+  align-self: flex-start;
+  color: grey;
   margin: 25px 0 15px;
   font-size: 1em;
   text-transform: uppercase;
@@ -59,7 +63,6 @@ label {
   font-weight: bold;
 }
 input{
-  display: block;
   padding: 10px 6px;
   width: 100%;
   box-sizing: border-box;
@@ -67,22 +70,31 @@ input{
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-button{
-  background: #709cdf;
-  border: 0;
-  padding: 10px 20px;
-  margin-top: 20px;
-  color: white;
-  font-weight: bold;
-  border-radius: 20px;
-}
-button:hover{
-  background: #0e52b7;
-}
 .error{
   color: red;
   margin-top: 10px;
-  font-size: 0.8em;
+  font-size: 12px;
   font-weight: bold;
+}
+.start{
+  display: flex;
+  justify-content: center;
+}
+a{
+  background-color: rgb(10, 102, 194);
+  border: none;
+  padding: 15px 0px;
+  width: 100px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  transition: background-color 0.15s;
+}
+a:hover{
+  background-color: rgb(2, 70, 138);
 }
 </style>

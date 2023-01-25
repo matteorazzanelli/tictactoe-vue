@@ -1,6 +1,7 @@
 <template>
   <h1>TIC-TAC-TOE</h1>
   <p>This is a simple implementation of the tic-tac-toe in Vue.js</p>
+  <p>Please add 2 feasbile names and press Start</p>
   <InputForm/>
 </template>
 
@@ -10,9 +11,7 @@ import InputForm from '@/components/InputForm.vue'
 
 export default {
   name: 'HomeView',
-  components: {
-    InputForm
-  }
+  components: { InputForm }
 }
 </script>
 
@@ -35,5 +34,9 @@ h1 {
 body {
   margin: 0;
   background: #eee;
+}
+p {
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>
