@@ -63,7 +63,7 @@ Start2impact personal page - https://talent.start2impact.it/profile/matteo-razza
 
 Project Repository: [Tic Tac Toe](https://github.com/matteorazzanelli/tictactoe-vue)
 
-Project Website:  [Tic Tac Toe - Firebase](https://tictactoe-vue-app.web.app/)
+Project Website:  [Tic Tac Toe - Firebase](https://tictactoe-vuejs-app.web.app/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [issues-shield]: https://img.shields.io/github/issues/matteorazzanelli/tictactoe-vue/repo.svg?style=for-the-badge
