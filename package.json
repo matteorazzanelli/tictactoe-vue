@@ -8,12 +8,28 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "firebase": "^9.16.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-service": "~5.0.0"
-  }
+    "@vue/cli-service": "~5.0.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "description": "[![Issues][issues-shield]][issues-url] [![LinkedIn][linkedin-shield]][linkedin-url]",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matteorazzanelli/tictactoe-vue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matteorazzanelli/tictactoe-vue/issues"
+  },
+  "homepage": "https://github.com/matteorazzanelli/tictactoe-vue#readme"
 }
