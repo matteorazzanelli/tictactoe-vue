@@ -5,7 +5,6 @@
 <br />
 <div align="center">
   <h3 align="center">Tic Tac Toe - Vue.js</h3>
-  <img src="Home.png" alt="Screenshot">
   <img src="Match.png" alt="Screenshot">
   <p align="center">Project created for <strong>Start2Impact</strong> course: <em>Vue.js</em></p>
 </div>
