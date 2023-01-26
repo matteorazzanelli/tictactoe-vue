@@ -4,11 +4,22 @@
   <h1>{{ playerX }} (X) VS. {{ playerO }} (O)</h1>
   <div class="game_table">
     <!-- Create the board and listen on click events -->
-    <TrisBoard @changed="changedFcn" :board="board" :hasWinner="hasWinner"/>
+    <TrisBoard @changed="changedFcn" :board="board" :matchEnded="matchEnded"/>
   </div>
-  <div v-if="hasWinner">
-    <h2>Player {{ currentPlayer }} WINS!</h2>
+  <!-- If there is a winner -->
+  <div v-if="matchEnded" class="currentSituation">
+    <div v-if="hasWinner">
+      <h2>Player {{ currentPlayer }} WINS!</h2>
+    </div>
+    <div v-else>
+      <h2>Match ended in a DRAW!</h2>
+    </div>
+    <!-- restart the same game -->
     <button @click="restartGame">Restart</button>
+    <!-- Or change the player names -->
+    <router-link :to="{name:'home'}">
+        Change player names
+    </router-link>
   </div>
   <div v-else>
     <h2>Next move : {{ currentPlayer }}</h2>
@@ -37,7 +48,8 @@ export default {
         [[2,0],[1,1],[0,2]]
       ],
       currentPlayer: '',
-      hasWinner: false
+      hasWinner: false,
+      matchEnded: false
     }
   },
   components: { TrisBoard },
@@ -50,9 +62,13 @@ export default {
     changedFcn(x,y){
       // Sign the board wrt currentPlayer
       this.board[x-1][y-1] = this.currentPlayer == this.playerX ? 'X' : 'O';
-      // Check if currentPlayer wins
+      // Check if currentPlayer wins or draw
       if(this.checkWinner()){
         this.hasWinner = true;
+        this.matchEnded = true;
+      }
+      else if(this.checkDraw()){
+        this.matchEnded = true;
       }
       else{
         this.currentPlayer = this.currentPlayer == this.playerX ? this.playerO : this.playerX;
@@ -70,6 +86,18 @@ export default {
         }
       }
     },
+    checkDraw(){
+      for(let i=0; i<this.board.length; i++){
+        for(let j=0; j<this.board[i].length; j++){
+          if(this.board[i][j] == ''){
+            return false;
+          }
+        }
+      }
+      // Match draw!
+      console.log('MATCH DRAW');
+      return true;
+    },
     restartGame(){
       this.board = [
         ["", "", ""],
@@ -78,6 +106,7 @@ export default {
       ];
       this.currentPlayer = this.playerX;
       this.hasWinner = false;
+      this.matchEnded = false;
     }
   },
 };
@@ -89,21 +118,26 @@ export default {
     justify-content: center;
     grid-template: 100px 100px 100px / 100px 100px 100px;
   }
-  button {
+  button, a {
     background-color: rgb(10, 102, 194);
     border: none;
-    padding: 15px 0px;
-    width: 100px;
+    padding: 15px 15px;
+    width: 200px;
     border-radius: 20px;
     cursor: pointer;
-    margin-top: 20px;
+    margin: 20px 20px;
     text-decoration: none;
     color: white;
     font-weight: bold;
     font-size: 15px;
     transition: background-color 0.15s;
   }
-  button:hover{
+  button:hover, a:hover{
     background-color: rgb(2, 70, 138);
+  }
+  .currentSituation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>

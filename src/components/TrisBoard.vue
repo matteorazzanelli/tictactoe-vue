@@ -12,13 +12,14 @@
   export default {
     name: 'TrisBoard',
     emits: ['changed'],
-    props: ['board', 'hasWinner'],
+    props: ['board', 'matchEnded'],
     mounted(){
       console.log(this.board);
     },
     methods: {
       changeStatus(x,y){
-        if(!this.hasWinner){
+        // check if game not ended and field empty
+        if(!this.matchEnded && this.board[x-1][y-1]==''){
           this.$emit('changed', x,y);
         }
       }
@@ -30,7 +31,6 @@
 /* *{border:1px solid blue} */
   .grid-elem {
     font-size: 75px;
-    border: 2px solid crimson;
     background-color: #3a3a3c;
     color: white;
     cursor: pointer;
