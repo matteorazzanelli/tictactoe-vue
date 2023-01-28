@@ -4,13 +4,15 @@
     <label>First player:</label>
     <input type="text" required v-model="firstPlayer">
     <div v-show="firstNameTooShort" class="error">Name too short</div>
+    <div v-show="sameName" class="error">You cannot assing the same name</div>
     
     <label>Second player:</label>
     <input type="text" required v-model="secondPlayer">
     <div v-show="secondNameTooShort" class="error">Name too short</div>
+    <div v-show="sameName" class="error">You cannot assing the same name</div>
 
     <!-- Show the button only if names are ok -->
-    <div v-if="!firstNameTooShort && !secondNameTooShort" class="start">
+    <div v-if="!firstNameTooShort && !secondNameTooShort && !sameName" class="start">
       <router-link :to="{name:'match', params:{ playerX: firstPlayer, playerO: secondPlayer }}">
         Start
       </router-link>
@@ -27,16 +29,24 @@
         firstPlayer: '',
         secondPlayer: '',
         firstNameTooShort: true,
-        secondNameTooShort: true
+        secondNameTooShort: true,
+        sameName: true
       }
     },
     watch: {
       // Just 'watch' if variables are ok or not
       firstPlayer: function(value){
         this.firstNameTooShort = value.length < 3 ? true : false;
+        this.updateSameName();
       },
       secondPlayer: function(value){
         this.secondNameTooShort = value.length < 3 ? true : false;
+        this.updateSameName();
+      }
+    },
+    methods: {
+      updateSameName (){
+        this.sameName = (this.firstPlayer == this.secondPlayer) ? true : false;
       }
     }
   }
