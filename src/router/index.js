@@ -9,10 +9,9 @@ const routes = [
     component: HomeView
   },
   {
-    path: "/match/:playerX/:playerO",
+    path: "/match/:playerOne:playerTwo",
     name: "match",
-    component: GameView,
-    props: true
+    component: GameView
   }
 ]
 

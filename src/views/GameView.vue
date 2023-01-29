@@ -49,11 +49,12 @@ export default {
       ],
       currentPlayer: '',
       hasWinner: false,
-      matchEnded: false
+      matchEnded: false,
+      playerX: this.$route.params.playerOne,
+      playerO: this.$route.params.playerTwo
     }
   },
   components: { TrisBoard },
-  props: ["playerX", "playerO"],
   mounted(){
     // default playerX is the first to move
     this.currentPlayer = this.playerX;

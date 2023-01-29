@@ -1,7 +1,6 @@
 <template>
   <h1>TIC-TAC-TOE</h1>
   <p>This is a simple implementation of the tic-tac-toe in Vue.js</p>
-  <p>Please add 2 feasbile names and press Start</p>
   <InputForm/>
 </template>
 

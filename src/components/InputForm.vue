@@ -1,4 +1,5 @@
 <template>
+  <p>Please add 2 feasbile names and press Start</p>
   <div class="form">
     <!-- Collect some info from players -->
     <label>First player:</label>
@@ -13,7 +14,7 @@
 
     <!-- Show the button only if names are ok -->
     <div v-if="!firstNameTooShort && !secondNameTooShort && !sameName" class="start">
-      <router-link :to="{name:'match', params:{ playerX: firstPlayer, playerO: secondPlayer }}">
+      <router-link :to="{name:'match', params:{ playerOne: firstPlayer, playerTwo: secondPlayer }}">
         Start
       </router-link>
     </div>
