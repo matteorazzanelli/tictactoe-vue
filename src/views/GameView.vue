@@ -1,10 +1,10 @@
 
 
 <template>
-  <h1>{{ playerX }} (X) VS. {{ playerO }} (O)</h1>
+  <h1>{{ this.$route.params.playerOne }} (X) VS. {{ this.$route.params.playerTwo }} (O)</h1>
   <div class="game_table">
     <!-- Create the board and listen on click events -->
-    <TrisBoard @changed="changedFcn" :board="board" :matchEnded="matchEnded"/>
+    <TrisBoard @changed="updateVars" :matchEnded="matchEnded" :currentPlayer="currentPlayer"/>
   </div>
   <!-- If there is a winner -->
   <div v-if="matchEnded" class="currentSituation">
@@ -32,84 +32,26 @@ export default {
   name: 'GameView',
   data() {
     return {
-      board: [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""]
-      ],
-      combinations: [
-        [[0,0],[0,1],[0,2]],
-        [[1,0],[1,1],[1,2]],
-        [[2,0],[2,1],[2,2]],
-        [[0,0],[1,0],[2,0]],
-        [[0,1],[1,1],[2,1]],
-        [[0,2],[1,2],[2,2]],
-        [[0,0],[1,1],[2,2]],
-        [[2,0],[1,1],[0,2]]
-      ],
       currentPlayer: '',
-      hasWinner: false,
       matchEnded: false,
-      playerX: this.$route.params.playerOne,
-      playerO: this.$route.params.playerTwo
+      hasWinner: false
     }
   },
   components: { TrisBoard },
   mounted(){
     // default playerX is the first to move
-    this.currentPlayer = this.playerX;
+    this.currentPlayer = this.$route.params.playerOne;
   },
   methods: {
-    changedFcn(x,y){
-      // Sign the board wrt currentPlayer
-      this.board[x-1][y-1] = this.currentPlayer == this.playerX ? 'X' : 'O';
-      // Check if currentPlayer wins or draw
-      if(this.checkWinner()){
-        this.hasWinner = true;
-        this.matchEnded = true;
+    updateVars(ended, winner){
+      this.matchEnded = ended;
+      this.hasWinner = winner;
+      if(!ended && !winner){
+        this.currentPlayer = (this.currentPlayer == this.$route.params.playerOne) ? 
+          this.$route.params.playerOne : this.$route.params.playerTwo;
       }
-      else if(this.checkDraw()){
-        this.matchEnded = true;
-      }
-      else{
-        this.currentPlayer = this.currentPlayer == this.playerX ? this.playerO : this.playerX;
-      }
-    },
-    checkWinner(){
-      for(let i = 0; i<this.combinations.length; i++){
-        const [a, b, c] = this.combinations[i];
-        // Check if element not null and if player has won
-        if(this.board[a[0]][a[1]] != ''){
-          if(this.board[a[0]][a[1]] == this.board[b[0]][b[1]] && this.board[a[0]][a[1]] == this.board[c[0]][c[1]]){
-            console.log(this.currentPlayer + " WINS");
-            return true;
-          }
-        }
-      }
-    },
-    checkDraw(){
-      for(let i=0; i<this.board.length; i++){
-        for(let j=0; j<this.board[i].length; j++){
-          if(this.board[i][j] == ''){
-            return false;
-          }
-        }
-      }
-      // Match draw!
-      console.log('MATCH DRAW');
-      return true;
-    },
-    restartGame(){
-      this.board = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""]
-      ];
-      this.currentPlayer = this.playerX;
-      this.hasWinner = false;
-      this.matchEnded = false;
     }
-  },
+  }
 };
 </script>
 
