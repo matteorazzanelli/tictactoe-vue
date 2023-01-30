@@ -23,31 +23,30 @@
 </template>
 
 <script>
+
+import { ref, computed } from 'vue';
+
   export default {
     name: 'InputForm',
-    data () {
+    setup() {
+      const firstPlayer = ref('');
+      const secondPlayer = ref('');
+
+      const sameName = computed(() => {
+        return firstPlayer.value == secondPlayer.value;
+      });
+
+      const firstNameTooShort = computed(() => {
+        return (!firstPlayer.value || firstPlayer.value.length < 3);
+      });
+
+      const secondNameTooShort = computed(() => {
+        return (!secondPlayer.value || secondPlayer.value.length < 3);
+      });
+
       return {
-        firstPlayer: '',
-        secondPlayer: '',
-        firstNameTooShort: true,
-        secondNameTooShort: true,
-        sameName: true
-      }
-    },
-    watch: {
-      // Just 'watch' if variables are ok or not
-      firstPlayer: function(value){
-        this.firstNameTooShort = value.length < 3 ? true : false;
-        this.updateSameName();
-      },
-      secondPlayer: function(value){
-        this.secondNameTooShort = value.length < 3 ? true : false;
-        this.updateSameName();
-      }
-    },
-    methods: {
-      updateSameName (){
-        this.sameName = (this.firstPlayer == this.secondPlayer) ? true : false;
+        firstPlayer, secondPlayer,
+        firstNameTooShort, secondNameTooShort, sameName
       }
     }
   }
