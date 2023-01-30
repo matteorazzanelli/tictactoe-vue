@@ -2,10 +2,8 @@
 
 <template>
   <h1>{{ this.$route.params.playerOne }} (X) VS. {{ this.$route.params.playerTwo }} (O)</h1>
-  <div class="game_table">
-    <!-- Create the board and listen on click events -->
-    <TrisBoard @changed="updateVars" :matchEnded="matchEnded" :currentPlayer="currentPlayer"/>
-  </div>
+  <!-- Create the board and listen on click events -->
+  <TrisBoard @changed="updateVars" :matchEnded="matchEnded" :currentPlayerSymbol="currentPlayerSymbol"/>
   <!-- If there is a winner -->
   <div v-if="matchEnded" class="currentSituation">
     <div v-if="hasWinner">
@@ -14,8 +12,6 @@
     <div v-else>
       <h2>Match ended in a DRAW!</h2>
     </div>
-    <!-- restart the same game -->
-    <button @click="restartGame">Restart</button>
     <!-- Or change the player names -->
     <router-link :to="{name:'home'}">
         Change player names
@@ -33,6 +29,7 @@ export default {
   data() {
     return {
       currentPlayer: '',
+      currentPlayerSymbol: '',
       matchEnded: false,
       hasWinner: false
     }
@@ -41,14 +38,26 @@ export default {
   mounted(){
     // default playerX is the first to move
     this.currentPlayer = this.$route.params.playerOne;
+    this.currentPlayerSymbol = 'X';
   },
   methods: {
     updateVars(ended, winner){
       this.matchEnded = ended;
       this.hasWinner = winner;
       if(!ended && !winner){
-        this.currentPlayer = (this.currentPlayer == this.$route.params.playerOne) ? 
-          this.$route.params.playerOne : this.$route.params.playerTwo;
+        // match not ended, swap players
+        if(this.currentPlayer == this.$route.params.playerOne){
+          this.currentPlayer = this.$route.params.playerTwo;
+          this.currentPlayerSymbol = 'O';
+        }
+        else{
+          this.currentPlayer = this.$route.params.playerOne;
+          this.currentPlayerSymbol = 'X';
+        }
+      }
+      // debug
+      if(winner){
+        console.log(this.currentPlayer + " WINS");
       }
     }
   }
@@ -56,11 +65,6 @@ export default {
 </script>
 
 <style>
-  .game_table {
-    display: grid;
-    justify-content: center;
-    grid-template: 100px 100px 100px / 100px 100px 100px;
-  }
   button, a {
     background-color: rgb(10, 102, 194);
     border: none;
