@@ -24,44 +24,50 @@
 
 <script>
 import TrisBoard from "@/components/TrisBoard.vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
 export default {
   name: 'GameView',
-  data() {
-    return {
-      currentPlayer: '',
-      currentPlayerSymbol: '',
-      matchEnded: false,
-      hasWinner: false,
-      playerOne: this.$route.params.player1name,
-      playerTwo: this.$route.params.player2name
-    }
-  },
   components: { TrisBoard },
-  mounted(){
-    // default playerX is the first to move
-    this.currentPlayer = this.playerOne;
-    this.currentPlayerSymbol = 'X';
-  },
-  methods: {
-    updateVars(ended, winner){
-      this.matchEnded = ended;
-      this.hasWinner = winner;
+  setup() {
+
+    const route = useRoute();
+
+    const currentPlayer = ref('');
+    const currentPlayerSymbol = ref('');
+    const matchEnded = ref(false);
+    const hasWinner = ref(false);
+    const playerOne = ref(route.params.player1name);
+    const playerTwo = ref(route.params.player2name);
+
+    onMounted(() => {
+      // default playerX is the first to move
+      currentPlayer.value = playerOne.value;
+      currentPlayerSymbol.value = 'X';
+    });
+
+    const updateVars = (ended, winner) => {
+      matchEnded.value = ended;
+      hasWinner.value = winner;
       if(!ended && !winner){
         // match not ended (or restarted), swap players
-        if(this.currentPlayer == this.playerOne){
-          this.currentPlayer = this.playerTwo;
-          this.currentPlayerSymbol = 'O';
+        if(currentPlayer.value == playerOne.value){
+          currentPlayer.value = playerTwo.value;
+          currentPlayerSymbol.value = 'O';
         }
         else{
-          this.currentPlayer = this.playerOne;
-          this.currentPlayerSymbol = 'X';
+          currentPlayer.value = playerOne.value;
+          currentPlayerSymbol.value = 'X';
         }
       }
       // debug
       if(winner){
-        console.log(this.currentPlayer + " WINS");
+        console.log(currentPlayer.value + " WINS");
       }
     }
+
+    return {currentPlayer, currentPlayerSymbol, matchEnded, hasWinner, playerOne, playerTwo, updateVars}
   }
 };
 </script>

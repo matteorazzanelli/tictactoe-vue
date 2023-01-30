@@ -13,83 +13,92 @@
 </template>
 
 <script>
-  export default {
-    name: 'TrisBoard',
-    emits: ['changed'],
-    props: ['matchEnded', 'currentPlayerSymbol'],
-    data() {
-      return {
-        board: [
-          ["", "", ""],
-          ["", "", ""],
-          ["", "", ""]
-        ],
-        combinations: [
-          [[0,0],[0,1],[0,2]],
-          [[1,0],[1,1],[1,2]],
-          [[2,0],[2,1],[2,2]],
-          [[0,0],[1,0],[2,0]],
-          [[0,1],[1,1],[2,1]],
-          [[0,2],[1,2],[2,2]],
-          [[0,0],[1,1],[2,2]],
-          [[2,0],[1,1],[0,2]]
-        ],
+
+import {ref, onMounted} from "vue"
+
+export default {
+  name: 'TrisBoard',
+  emits: ['changed'],
+  props: ['matchEnded', 'currentPlayerSymbol'],
+  setup(props, context) {
+    const board = ref([
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""]
+    ]);
+    const combinations = ref( [
+      [[0,0],[0,1],[0,2]],
+      [[1,0],[1,1],[1,2]],
+      [[2,0],[2,1],[2,2]],
+      [[0,0],[1,0],[2,0]],
+      [[0,1],[1,1],[2,1]],
+      [[0,2],[1,2],[2,2]],
+      [[0,0],[1,1],[2,2]],
+      [[2,0],[1,1],[0,2]]
+    ]);
+
+    onMounted(() => {
+      console.log(board.value);
+    });
+
+    const changeStatus = (x,y) => {
+      // check if game not ended and field empty
+      if(!props.matchEnded && board.value[x-1][y-1]==''){
+        // Sign the board wrt currentPlayer
+        board.value[x-1][y-1] = props.currentPlayerSymbol;
+        // Check if currentPlayer wins or draw
+        if(checkWinner()){
+          context.emit('changed',true, true);
+        }
+        else if(checkDraw()){
+          context.emit('changed',true, false);
+        }
+        else{
+          context.emit('changed',false, false);
+        }
       }
-    },
-    mounted(){
-      console.log(this.board);
-    },
-    methods: {
-      changeStatus(x,y){
-        // check if game not ended and field empty
-        if(!this.matchEnded && this.board[x-1][y-1]==''){
-          // Sign the board wrt currentPlayer
-          this.board[x-1][y-1] = this.currentPlayerSymbol;
-          // Check if currentPlayer wins or draw
-          if(this.checkWinner()){
-            this.$emit('changed',true, true);
-          }
-          else if(this.checkDraw()){
-            this.$emit('changed',true, false);
-          }
-          else{
-            this.$emit('changed',false, false);
+    };
+
+    const checkWinner = () => {
+      for(let i = 0; i < combinations.value.length; i++){
+        const [a, b, c] = combinations.value[i];
+        // Check if element not null and if player has won
+        if(board.value[a[0]][a[1]] != ''){
+          if(board.value[a[0]][a[1]] == board.value[b[0]][b[1]] && board.value[a[0]][a[1]] == board.value[c[0]][c[1]]){
+            return true;
           }
         }
-      },
-      checkWinner(){
-        for(let i = 0; i<this.combinations.length; i++){
-          const [a, b, c] = this.combinations[i];
-          // Check if element not null and if player has won
-          if(this.board[a[0]][a[1]] != ''){
-            if(this.board[a[0]][a[1]] == this.board[b[0]][b[1]] && this.board[a[0]][a[1]] == this.board[c[0]][c[1]]){
-              return true;
-            }
-          }
-        }
-      },
-      checkDraw(){
-        for(let i=0; i<this.board.length; i++){
-          for(let j=0; j<this.board[i].length; j++){
-            if(this.board[i][j] == ''){
-              return false;
-            }
-          }
-        }
-        // Match draw!
-        console.log('MATCH DRAW');
-        return true;
-      },
-      restartGame(){
-        this.board = [
-          ["", "", ""],
-          ["", "", ""],
-          ["", "", ""]
-        ];
-        this.$emit('changed',false, false);
       }
+    };
+
+    const checkDraw = () => {
+      for(let i=0; i<board.value.length; i++){
+        for(let j=0; j<board.value[i].length; j++){
+          if(board.value[i][j] == ''){
+            return false;
+          }
+        }
+      }
+      // Match draw!
+      console.log('MATCH DRAW');
+      return true;
+    };
+
+    const restartGame = () => {
+      board.value = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""]
+      ];
+      context.emit('changed',false, false);
+    };
+
+    return {
+      board, combinations, 
+      changeStatus, checkWinner, checkDraw, restartGame
     }
   }
+}
 </script>
 
 <style scoped>
