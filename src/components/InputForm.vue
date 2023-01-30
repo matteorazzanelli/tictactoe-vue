@@ -14,7 +14,7 @@
 
     <!-- Show the button only if names are ok -->
     <div v-if="!firstNameTooShort && !secondNameTooShort && !sameName" class="start">
-      <router-link :to="{name:'match', params:{ playerOne: firstPlayer, playerTwo: secondPlayer }}">
+      <router-link :to="{name:'match', params:{ player1name: firstPlayer, player2name: secondPlayer }}">
         Start
       </router-link>
     </div>

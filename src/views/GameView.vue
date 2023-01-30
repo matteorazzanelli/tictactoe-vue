@@ -1,7 +1,7 @@
 
 
 <template>
-  <h1>{{ this.$route.params.playerOne }} (X) VS. {{ this.$route.params.playerTwo }} (O)</h1>
+  <h1>{{ playerOne }} (X) VS. {{ playerTwo }} (O)</h1>
   <!-- Create the board and listen on click events -->
   <TrisBoard @changed="updateVars" :matchEnded="matchEnded" :currentPlayerSymbol="currentPlayerSymbol"/>
   <!-- If there is a winner -->
@@ -31,13 +31,15 @@ export default {
       currentPlayer: '',
       currentPlayerSymbol: '',
       matchEnded: false,
-      hasWinner: false
+      hasWinner: false,
+      playerOne: this.$route.params.player1name,
+      playerTwo: this.$route.params.player2name
     }
   },
   components: { TrisBoard },
   mounted(){
     // default playerX is the first to move
-    this.currentPlayer = this.$route.params.playerOne;
+    this.currentPlayer = this.playerOne;
     this.currentPlayerSymbol = 'X';
   },
   methods: {
@@ -45,13 +47,13 @@ export default {
       this.matchEnded = ended;
       this.hasWinner = winner;
       if(!ended && !winner){
-        // match not ended, swap players
-        if(this.currentPlayer == this.$route.params.playerOne){
-          this.currentPlayer = this.$route.params.playerTwo;
+        // match not ended (or restarted), swap players
+        if(this.currentPlayer == this.playerOne){
+          this.currentPlayer = this.playerTwo;
           this.currentPlayerSymbol = 'O';
         }
         else{
-          this.currentPlayer = this.$route.params.playerOne;
+          this.currentPlayer = this.playerOne;
           this.currentPlayerSymbol = 'X';
         }
       }
