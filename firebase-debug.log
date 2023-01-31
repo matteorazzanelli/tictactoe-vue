@@ -1,0 +1,13 @@
+[debug] [2023-01-30T15:37:55.156Z] ----------------------------------------------------------------------
+[debug] [2023-01-30T15:37:55.157Z] Command:       /usr/local/bin/firebase /home/matteo/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase login
+[debug] [2023-01-30T15:37:55.157Z] CLI Version:   11.20.0
+[debug] [2023-01-30T15:37:55.157Z] Platform:      linux
+[debug] [2023-01-30T15:37:55.157Z] Node Version:  v16.16.0
+[debug] [2023-01-30T15:37:55.158Z] Time:          Mon Jan 30 2023 16:37:55 GMT+0100 (Central European Standard Time)
+[debug] [2023-01-30T15:37:55.158Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-01-30T15:37:55.160Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2023-01-30T15:37:55.778Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-01-30T15:37:55.779Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}

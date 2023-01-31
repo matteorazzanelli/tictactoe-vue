@@ -14,7 +14,12 @@
 
     <!-- Show the button only if names are ok -->
     <div v-if="!firstNameTooShort && !secondNameTooShort && !sameName" class="start">
-      <router-link :to="{name:'match', params:{ player1name: firstPlayer, player2name: secondPlayer }}">
+      <router-link 
+        :to="{
+          name:'match', 
+          query:{ players: currentPlayers }
+        }"
+      >
         Start
       </router-link>
     </div>
@@ -32,6 +37,14 @@ import { ref, computed } from 'vue';
       const firstPlayer = ref('');
       const secondPlayer = ref('');
 
+      const currentPlayers = computed(() => {
+        let cp = {
+          "firstPlayer": firstPlayer.value,
+          "secondPlayer": secondPlayer.value
+        }
+        return JSON.stringify(cp)
+      }) 
+
       const sameName = computed(() => {
         return firstPlayer.value == secondPlayer.value;
       });
@@ -46,7 +59,8 @@ import { ref, computed } from 'vue';
 
       return {
         firstPlayer, secondPlayer,
-        firstNameTooShort, secondNameTooShort, sameName
+        firstNameTooShort, secondNameTooShort, sameName,
+        currentPlayers
       }
     }
   }

@@ -9,9 +9,10 @@ const routes = [
     component: HomeView
   },
   {
-    path: "/match/player1/:player1name/player2/:player2name",
+    path: "/match/",
     name: "match",
-    component: GameView
+    component: GameView,
+    props: route => ({players: route.query.players})
   }
 ]
 

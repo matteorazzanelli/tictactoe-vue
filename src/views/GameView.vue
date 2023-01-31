@@ -30,7 +30,10 @@ import { useRoute } from "vue-router";
 export default {
   name: 'GameView',
   components: { TrisBoard },
-  setup() {
+  props: {
+    players: {type: String, required: true},
+  },
+  setup(props) {
 
     const route = useRoute();
 
@@ -38,8 +41,9 @@ export default {
     const currentPlayerSymbol = ref('');
     const matchEnded = ref(false);
     const hasWinner = ref(false);
-    const playerOne = ref(route.params.player1name);
-    const playerTwo = ref(route.params.player2name);
+    
+    const playerOne = ref(JSON.parse(props.players).firstPlayer);
+    const playerTwo = ref(JSON.parse(props.players).secondPlayer);
 
     onMounted(() => {
       // default playerX is the first to move
@@ -67,7 +71,8 @@ export default {
       }
     }
 
-    return {currentPlayer, currentPlayerSymbol, matchEnded, hasWinner, playerOne, playerTwo, updateVars}
+    return {currentPlayer, currentPlayerSymbol, matchEnded, hasWinner, 
+      playerOne, playerTwo, updateVars}
   }
 };
 </script>
